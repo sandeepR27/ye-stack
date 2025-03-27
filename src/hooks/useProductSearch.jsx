@@ -23,18 +23,15 @@ export const useProductSearch = (initialQuery = '') => {
 
   const debouncedSearch = useCallback(
     debounce((searchQuery) => {
-      // Only set query and refetch if search is not empty
-      if (searchQuery.trim() !== '') {
+      if (searchQuery.trim() !== '' && searchQuery !== query) {
         setQuery(searchQuery);
         setPage(1);
         refetch();
-      } else {
-        // Reset to empty state if query is empty
-        setQuery('');
       }
     }, 300),
-    [refetch]
+    [query, refetch]
   );
+  
 
    const orderedProducts = useMemo(() => {
     if (!data || data.length === 0 || !query) return [];

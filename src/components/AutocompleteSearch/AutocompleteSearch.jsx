@@ -21,15 +21,13 @@ const AutocompleteSearch = () => {
     const value = e.target.value;
     setInputValue(value);
     
-    // Only open dropdown and set query if there's a value
     if (value.trim() !== '') {
       setQuery(value);
       setIsDropdownOpen(true);
       setActiveIndex(-1);
     } else {
-      // Close dropdown if input is empty
       setIsDropdownOpen(false);
-      setSelectedProduct(null); // Clear selected product when input is empty
+      setSelectedProduct(null);
     }
   }, [setQuery]);
 
@@ -47,44 +45,41 @@ const AutocompleteSearch = () => {
     setIsDropdownOpen(false);
   }, []);
 
-const handleKeyDown = useCallback((e) => {
-  switch (e.key) {
-    case 'ArrowDown':
-      setActiveIndex((prev) => {
-        const nextIndex = Math.min(prev + 1, products.length - 1);
-        scrollIntoView(nextIndex);
-        return nextIndex;
-      });
-      break;
+  const handleKeyDown = useCallback((e) => {
+    switch (e.key) {
+      case 'ArrowDown':
+  setActiveIndex((prev) => {
+    const nextIndex = prev === products.length - 1 ? 0 : prev + 1;
+    scrollIntoView(nextIndex);
+    return nextIndex;
+  });
+  break;
 
-    case 'ArrowUp':
-      setActiveIndex((prev) => {
-        const prevIndex = Math.max(prev - 1, 0);
-        scrollIntoView(prevIndex);
-        return prevIndex;
-      });
-      break;
+case 'ArrowUp':
+  setActiveIndex((prev) => {
+    const prevIndex = prev <= 0 ? products.length - 1 : prev - 1;
+    scrollIntoView(prevIndex);
+    return prevIndex;
+  });
+  break;
 
-    case 'Enter':
-      if (activeIndex !== -1) {
-        handleSelectProduct(products[activeIndex]);
-      }
-      break;
 
-    case 'Escape':
-      setIsDropdownOpen(false);
-      break;
+      case 'Enter':
+        if (activeIndex !== -1) {
+          handleSelectProduct(products[activeIndex]);
+        }
+        break;
 
-    case 'Tab': // Close dropdown on Tab and allow natural focus movement
-      setIsDropdownOpen(false);
-      break;
+      case 'Escape':
+      case 'Tab':
+        setIsDropdownOpen(false);
+        break;
 
-    default:
-      break;
-  }
-}, [products, activeIndex, handleSelectProduct]);
+      default:
+        break;
+    }
+  }, [products, activeIndex, handleSelectProduct]);
 
-  
   const scrollIntoView = (index) => {
     const listItems = document.querySelectorAll(".dropdown-list .product-item");
     if (listItems[index]) {
@@ -94,12 +89,12 @@ const handleKeyDown = useCallback((e) => {
       });
     }
   };
-  
 
   const renderProductItem = useCallback((product, index) => (
     <List.Item
       className={`product-item ${activeIndex === index ? 'active' : ''}`}
       onClick={() => handleSelectProduct(product)}
+      aria-selected={activeIndex === index}
     >
       <Space className="product-space" size="small">
         <img 
@@ -124,12 +119,12 @@ const handleKeyDown = useCallback((e) => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => {
-            // Only open dropdown if there's a value
-            if (inputValue.trim() !== '') {
+            if (inputValue.trim() !== '' && products.length > 0) {
               setIsDropdownOpen(true);
             }
-          }}
-          placeholder="Search shirts, jwellery, jackets, electronics..."
+          }
+        }
+          placeholder="Search shirts, jewelry, jackets, electronics..."
           prefix={<SearchOutlined />}
           allowClear={{ clearIcon: <span onClick={handleClear}>×</span> }}
           className="search-input"
