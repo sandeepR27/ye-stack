@@ -16,9 +16,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="w-full max-w-md">
-          <h1 className="text-2xl font-bold mb-4 text-center">
+      <div className="Home-page">
+        <div className="Home-page-container">
+          <h1 className="Home-page-title">
             Product Search
           </h1>
           <AutocompleteSearch />
