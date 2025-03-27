@@ -18,9 +18,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="Home-page">
         <div className="Home-page-container">
-          <h1 className="Home-page-title">
-            Product Search
+           <h1>
+            Search for products
           </h1>
+        </div>
+        <div className="Home-page-search-container">
           <AutocompleteSearch />
         </div>
       </div>

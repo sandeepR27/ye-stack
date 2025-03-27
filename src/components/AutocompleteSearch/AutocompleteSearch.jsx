@@ -119,7 +119,7 @@ const handleKeyDown = useCallback((e) => {
     <div className="autocomplete-container">
       <div className="search-wrapper">
         <Input
-          size="middle"
+          size="large"
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -129,7 +129,7 @@ const handleKeyDown = useCallback((e) => {
               setIsDropdownOpen(true);
             }
           }}
-          placeholder="Search products..."
+          placeholder="Search shirts, jwellery, jackets, electronics..."
           prefix={<SearchOutlined />}
           allowClear={{ clearIcon: <span onClick={handleClear}>×</span> }}
           className="search-input"
